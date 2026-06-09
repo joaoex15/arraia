@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>🔥 Arraiá — Coloca Lenha!</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== RESET & VARIÁVEIS ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0603;
+      --amber:    #f59e0b;
+      --orange:   #f97316;
+      --red:      #ef4444;
+      --yellow:   #fde047;
+      --cream:    #fef3c7;
+      --font-d:   'Bebas Neue', cursive;
+      --font-b:   'Nunito', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      font-family: var(--font-b);
+      color: var(--cream);
+      overflow: hidden;
+      /* Previne highlight de toque no mobile */
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* ===== FUNDO COM TEXTURA ===== */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(249,115,22,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 40% at 50% 0%,   rgba(245,158,11,0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== LAYOUT ===== */
+    .page {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 24px 40px;
+    }
+
+    /* ===== TOPO ===== */
+    .top-section {
+      text-align: center;
+      width: 100%;
+    }
+    .event-name {
+      font-family: var(--font-d);
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--yellow), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 16px rgba(249,115,22,0.4));
+    }
+    .event-sub {
+      font-size: clamp(0.7rem, 3vw, 0.9rem);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(254,243,199,0.4);
+      margin-top: 4px;
+    }
+
+    /* Bandeirinhas decorativas */
+    .bunting {
+      margin-top: 12px;
+      font-size: clamp(1.2rem, 5vw, 1.8rem);
+      letter-spacing: 6px;
+      opacity: 0.5;
+      animation: sway 3s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0%   { letter-spacing: 4px; }
+      100% { letter-spacing: 8px; }
+    }
+
+    /* ===== SEÇÃO CENTRAL (BOTÃO) ===== */
+    .center-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      flex: 1;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Mini fogueira decorativa acima do botão */
+    .mini-fire {
+      font-size: clamp(2.5rem, 10vw, 4rem);
+      animation: fireAnim 1.2s ease-in-out infinite alternate;
+      line-height: 1;
+    }
+    @keyframes fireAnim {
+      0%   { transform: scale(1)    rotate(-2deg); filter: brightness(1); }
+      100% { transform: scale(1.12) rotate(2deg);  filter: brightness(1.3); }
+    }
+
+    /* ===== BOTÃO PRINCIPAL ===== */
+    .btn-lenha {
+      position: relative;
+      width: min(320px, 85vw);
+      height: min(320px, 85vw);
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background: radial-gradient(circle at 40% 35%, #fef08a, #f59e0b 40%, #d97706 65%, #92400e 100%);
+      box-shadow:
+        0 0 0 8px rgba(245,158,11,0.15),
+        0 0 40px rgba(249,115,22,0.3),
+        0 8px 32px rgba(0,0,0,0.6);
+      transition:
+        transform 0.12s cubic-bezier(.34,1.56,.64,1),
+        box-shadow 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      /* Anel pulsante */
+      animation: pulse-ring 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% {
+        box-shadow:
+          0 0 0 8px rgba(245,158,11,0.15),
+          0 0 40px rgba(249,115,22,0.3),
+          0 8px 32px rgba(0,0,0,0.6);
+      }
+      50% {
+        box-shadow:
+          0 0 0 20px rgba(245,158,11,0.05),
+          0 0 70px rgba(249,115,22,0.5),
+          0 8px 32px rgba(0,0,0,0.6);
+      }
+    }
+
+    /* Estado: pressionado */
+    .btn-lenha:active,
+    .btn-lenha.pressed {
+      transform: scale(0.88);
+      animation: none;
+      box-shadow:
+        0 0 0 4px rgba(245,158,11,0.3),
+        0 0 60px rgba(249,115,22,0.7),
+        0 2px 12px rgba(0,0,0,0.8);
+    }
+
+    /* Estado: bloqueado pelo debounce */
+    .btn-lenha.blocked {
+      transform: scale(0.92);
+      opacity: 0.8;
+    }
+
+    .btn-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .btn-icon {
+      font-size: clamp(3rem, 12vw, 5rem);
+      line-height: 1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      animation: iconBounce 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes iconBounce {
+      0%   { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-6px) scale(1.05); }
+    }
+    .btn-text {
+      font-family: var(--font-d);
+      font-size: clamp(1.2rem, 5vw, 1.8rem);
+      color: #451a03;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px rgba(255,255,255,0.3);
+    }
+
+    /* ===== FEEDBACK DE CLIQUE (ripple) ===== */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(0);
+      pointer-events: none;
+      animation: rippleAnim 0.5s ease-out forwards;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(3); opacity: 0; }
+    }
+
+    /* ===== CONTADOR LOCAL ===== */
+    .counter-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .counter-num {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 8vw, 3rem);
+      color: var(--amber);
+      text-shadow: 0 0 20px rgba(245,158,11,0.5);
+      transition: transform 0.15s ease;
+    }
+    .counter-num.bump {
+      transform: scale(1.2);
+    }
+    .counter-label {
+      font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(254,243,199,0.35);
+    }
+
+    /* ===== RODAPÉ (energia global) ===== */
+    .bottom-section {
+      width: 100%;
+    }
+    .global-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .gbl-title {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(254,243,199,0.35);
+    }
+    .gbl-percent {
+      font-family: var(--font-d);
+      font-size: 0.9rem;
+      color: var(--amber);
+    }
+    .global-bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(245,158,11,0.1);
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(245,158,11,0.15);
+    }
+    .global-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #92400e, #f59e0b, #fde047);
+      border-radius: 5px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 8px rgba(245,158,11,0.5);
+    }
+    .global-status {
+      text-align: center;
+      margin-top: 8px;
+      font-size: clamp(0.7rem, 3vw, 0.85rem);
+      color: rgba(254,243,199,0.5);
+      font-style: italic;
+    }
+
+    /* ===== TOAST DE FEEDBACK ===== */
+    .toast {
+      position: fixed;
+      top: 20px; left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: rgba(245,158,11,0.15);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: var(--cream);
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+      opacity: 0;
+      z-index: 50;
+      white-space: nowrap;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== STATUS DE CONEXÃO ===== */
+    .conn-dot {
+      position: fixed;
+      top: 12px; right: 16px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #6b7280;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+    .conn-dot.connected    { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+    .conn-dot.disconnected { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+  </style>
+</head>
+<body>
+
+<!-- Indicador de conexão -->
+<div class="conn-dot" id="connDot"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast">🔥 Lenha jogada!</div>
+
+<div class="page">
+
+  <!-- TOPO -->
+  <div class="top-section">
+    <div class="event-name">🔥 Arraiá Corporativo</div>
+    <div class="event-sub">Ajude a acender a fogueira!</div>
+    <div class="bunting">🎪 🏮 🎪 🏮 🎪</div>
+  </div>
+
+  <!-- CENTRO: Botão + Contador -->
+  <div class="center-section">
+    <div class="mini-fire">🪵🔥🪵</div>
+
+    <!-- BOTÃO PRINCIPAL -->
+    <button class="btn-lenha" id="btnLenha" aria-label="Colocar lenha na fogueira">
+      <div class="btn-inner">
+        <span class="btn-icon">🔥</span>
+        <span class="btn-text">Colocar mais lenha!</span>
+      </div>
+    </button>
+
+    <!-- CONTADOR LOCAL -->
+    <div class="counter-wrap">
+      <div class="counter-num" id="localCount">0</div>
+      <div class="counter-label">Suas lenhas 🪵</div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ: Energia global -->
+  <div class="bottom-section">
+    <div class="global-bar-label">
+      <span class="gbl-title">⚡ Energia do time</span>
+      <span class="gbl-percent" id="globalPercent">0%</span>
+    </div>
+    <div class="global-bar-track">
+      <div class="global-bar-fill" id="globalBarFill"></div>
+    </div>
+    <div class="global-status" id="globalStatus">Preparando a fogueira...</div>
+  </div>
+
+</div>
+
+<!-- Socket.IO client -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// ============================================================
+// CELULAR — Lógica JavaScript
+// ============================================================
+
+const socket    = io();
+const btn       = document.getElementById('btnLenha');
+const connDot   = document.getElementById('connDot');
+const toast     = document.getElementById('toast');
+const localCnt  = document.getElementById('localCount');
+const gPercent  = document.getElementById('globalPercent');
+const gBarFill  = document.getElementById('globalBarFill');
+const gStatus   = document.getElementById('globalStatus');
+
+// ===== Estado local =====
+let localCount    = 0;
+let canClick      = true;   // Debounce flag
+const DEBOUNCE_MS = 200;    // Intervalo mínimo entre cliques
+let toastTimeout  = null;
+
+// ===== Mapa de Status =====
+const STATUS_MAP = [
+  { min: 0,  max: 24,  text: 'Preparando a fogueira...' },
+  { min: 25, max: 49,  text: 'Aquecendo os motores 🔥' },
+  { min: 50, max: 74,  text: 'O mercado está esquentando!' },
+  { min: 75, max: 99,  text: 'Expectativa lá em cima! 🚀' },
+  { min: 100, max: 100, text: 'LANÇAMENTO LIBERADO! 🎉' },
+];
+function getStatus(p) {
+  return (STATUS_MAP.find(s => p >= s.min && p <= s.max) || STATUS_MAP[0]).text;
+}
+
+// ===== Mostrar Toast =====
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 1200);
+}
+
+// ===== Efeito Ripple no botão =====
+function spawnRipple(e) {
+  const rect   = btn.getBoundingClientRect();
+  const cx     = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const cy     = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  const size   = Math.max(rect.width, rect.height) * 0.6;
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${cx - size/2}px; top:${cy - size/2}px;
+  `;
+  btn.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+}
+
+// ===== Bump no contador local =====
+function bumpCounter() {
+  localCnt.classList.remove('bump');
+  // Force reflow para reiniciar animação
+  void localCnt.offsetWidth;
+  localCnt.classList.add('bump');
+  setTimeout(() => localCnt.classList.remove('bump'), 200);
+}
+
+// ===== Handler de Clique =====
+function handleClick(e) {
+  if (!canClick) {
+    // Debounce ativo: feedback visual de bloqueio
+    btn.classList.add('blocked');
+    setTimeout(() => btn.classList.remove('blocked'), 100);
+    return;
+  }
+
+  // Ativa debounce
+  canClick = false;
+  setTimeout(() => { canClick = true; }, DEBOUNCE_MS);
+
+  // Feedback visual: press
+  btn.classList.add('pressed');
+  setTimeout(() => btn.classList.remove('pressed'), 120);
+
+  // Ripple
+  spawnRipple(e);
+
+  // Incrementa contador local
+  localCount++;
+  localCnt.textContent = localCount;
+  bumpCounter();
+
+  // Emite para o servidor
+  socket.emit('add_energy');
+
+  // Toast
+  const toasts = ['🔥 Lenha jogada!', '🪵 Fogueira crescendo!', '🔥 Tá pegando fogo!', '🚀 Isso aí!'];
+  if (localCount % 5 === 0) {
+    showToast(`🎉 ${localCount} lenhas! Você tá arrasando!`);
+  } else {
+    showToast(toasts[Math.floor(Math.random() * toasts.length)]);
+  }
+}
+
+// Suporte a touch e click
+btn.addEventListener('click', handleClick);
+btn.addEventListener('touchstart', (e) => {
+  e.preventDefault(); // Previne double-tap zoom e 300ms delay
+  handleClick(e);
+}, { passive: false });
+
+// ===== Socket.IO: Receber Energia Global =====
+socket.on('connect', () => {
+  connDot.className = 'conn-dot connected';
+  console.log('[Celular] Conectado:', socket.id);
+});
+
+socket.on('energy_update', ({ energy, percent }) => {
+  gPercent.textContent    = percent + '%';
+  gBarFill.style.width    = percent + '%';
+  gStatus.textContent     = getStatus(percent);
+
+  // Muda cor do status conforme progresso
+  if (percent >= 100) {
+    gStatus.style.color = '#22c55e';
+  } else if (percent >= 75) {
+    gStatus.style.color = '#fde047';
+  } else if (percent >= 50) {
+    gStatus.style.color = '#f97316';
+  } else {
+    gStatus.style.color = 'rgba(254,243,199,0.5)';
+  }
+});
+
+socket.on('disconnect', () => {
+  connDot.className = 'conn-dot disconnected';
+  console.warn('[Celular] Desconectado, tentando reconectar...');
+});
+
+// ===== Previne context menu no long press (mobile) =====
+btn.addEventListener('contextmenu', e => e.preventDefault());
+</script>
+</body>
+</html>
