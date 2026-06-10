@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>🔥 Arraiá — Coloca Lenha!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>🔥 Coloca Lenha na Fogueira — Stanza</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;900&display=swap" rel="stylesheet" />
@@ -12,157 +12,173 @@
     /* ===== RESET & VARIÁVEIS ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:       #0a0603;
-      --amber:    #f59e0b;
-      --orange:   #f97316;
-      --red:      #ef4444;
-      --yellow:   #fde047;
-      --cream:    #fef3c7;
+      --bg:       #23252f;
+      --orange:   #ff6a00;
+      --orange-dim: rgba(255,106,0,0.15);
+      --purple:   #4b2d8a;
+      --cream:    #ffffff;
       --font-d:   'Bebas Neue', cursive;
       --font-b:   'Nunito', sans-serif;
     }
 
     html, body {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       background: var(--bg);
       font-family: var(--font-b);
       color: var(--cream);
       overflow: hidden;
-      /* Previne highlight de toque no mobile */
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      position: fixed;
+      top: 0;
+      left: 0;
     }
 
     /* ===== FUNDO COM TEXTURA ===== */
     body::before {
       content: '';
-      position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(249,115,22,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 80% 40% at 50% 0%,   rgba(245,158,11,0.06) 0%, transparent 60%);
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,106,0,0.12) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* ===== LAYOUT ===== */
+    /* ===== LAYOUT PRINCIPAL - OCUPA 100% ===== */
     .page {
-      position: relative; z-index: 1;
-      width: 100%; height: 100%;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 32px 24px 40px;
+      padding: 20px 20px 24px;
+      gap: 8px;
     }
 
-    /* ===== TOPO ===== */
+    /* ===== TOPO COM LOGO APENAS ===== */
     .top-section {
       text-align: center;
       width: 100%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .event-name {
+
+    /* Logo principal (grande, sem texto) */
+    .main-logo {
+      width: auto;
+      max-width: 85%;
+      height: auto;
+      max-height: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* fallback caso não carregue imagem — texto minimalista */
+    .logo-fallback {
       font-family: var(--font-d);
-      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      font-size: clamp(1.6rem, 7vw, 2.2rem);
+      color: var(--orange);
+      text-shadow: 0 0 10px rgba(255,106,0,0.5);
       letter-spacing: 2px;
-      background: linear-gradient(135deg, var(--yellow), var(--orange));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 16px rgba(249,115,22,0.4));
+      background: rgba(0,0,0,0.3);
+      padding: 6px 18px;
+      border-radius: 60px;
+      display: inline-block;
     }
+
     .event-sub {
-      font-size: clamp(0.7rem, 3vw, 0.9rem);
-      letter-spacing: 3px;
+      font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: rgba(254,243,199,0.4);
-      margin-top: 4px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 8px;
     }
 
     /* Bandeirinhas decorativas */
     .bunting {
-      margin-top: 12px;
-      font-size: clamp(1.2rem, 5vw, 1.8rem);
-      letter-spacing: 6px;
-      opacity: 0.5;
-      animation: sway 3s ease-in-out infinite alternate;
-    }
-    @keyframes sway {
-      0%   { letter-spacing: 4px; }
-      100% { letter-spacing: 8px; }
+      margin-top: 6px;
+      font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+      letter-spacing: 4px;
+      opacity: 0.4;
     }
 
-    /* ===== SEÇÃO CENTRAL (BOTÃO) ===== */
+    /* ===== SEÇÃO CENTRAL - OCUPA ESPAÇO FLEXÍVEL ===== */
     .center-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
-      flex: 1;
       justify-content: center;
+      gap: 18px;
+      flex: 1;
       width: 100%;
+      min-height: 0;
     }
 
-    /* Mini fogueira decorativa acima do botão */
     .mini-fire {
-      font-size: clamp(2.5rem, 10vw, 4rem);
-      animation: fireAnim 1.2s ease-in-out infinite alternate;
+      font-size: clamp(2rem, 8vw, 3rem);
       line-height: 1;
+      text-shadow: 0 0 5px #ff6a00;
     }
     @keyframes fireAnim {
-      0%   { transform: scale(1)    rotate(-2deg); filter: brightness(1); }
-      100% { transform: scale(1.12) rotate(2deg);  filter: brightness(1.3); }
+      0%   { transform: scale(1) rotate(-2deg); filter: brightness(1); }
+      100% { transform: scale(1.1) rotate(2deg); filter: brightness(1.25); }
     }
 
-    /* ===== BOTÃO PRINCIPAL ===== */
+    /* ===== BOTÃO PRINCIPAL - RESPONSIVO ===== */
     .btn-lenha {
       position: relative;
-      width: min(320px, 85vw);
-      height: min(320px, 85vw);
+      width: min(280px, 72vw);
+      height: min(280px, 72vw);
       border-radius: 50%;
       border: none;
       cursor: pointer;
       outline: none;
-      background: radial-gradient(circle at 40% 35%, #fef08a, #f59e0b 40%, #d97706 65%, #92400e 100%);
+      background: radial-gradient(circle at 40% 35%, #ffb347, #ff6a00 40%, #cc3300 65%, #7a1a00 100%);
       box-shadow:
-        0 0 0 8px rgba(245,158,11,0.15),
-        0 0 40px rgba(249,115,22,0.3),
-        0 8px 32px rgba(0,0,0,0.6);
-      transition:
-        transform 0.12s cubic-bezier(.34,1.56,.64,1),
-        box-shadow 0.15s ease;
+        0 0 0 6px rgba(255,106,0,0.15),
+        0 0 30px rgba(255,106,0,0.3),
+        0 6px 24px rgba(0,0,0,0.5);
+      transition: transform 0.1s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s ease;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-      /* Anel pulsante */
       animation: pulse-ring 2.5s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     @keyframes pulse-ring {
       0%, 100% {
         box-shadow:
-          0 0 0 8px rgba(245,158,11,0.15),
-          0 0 40px rgba(249,115,22,0.3),
-          0 8px 32px rgba(0,0,0,0.6);
+          0 0 0 6px rgba(255,106,0,0.15),
+          0 0 30px rgba(255,106,0,0.3),
+          0 6px 24px rgba(0,0,0,0.5);
       }
       50% {
         box-shadow:
-          0 0 0 20px rgba(245,158,11,0.05),
-          0 0 70px rgba(249,115,22,0.5),
-          0 8px 32px rgba(0,0,0,0.6);
+          0 0 0 16px rgba(255,106,0,0.05),
+          0 0 55px rgba(255,106,0,0.5),
+          0 6px 24px rgba(0,0,0,0.5);
       }
     }
 
-    /* Estado: pressionado */
     .btn-lenha:active,
     .btn-lenha.pressed {
       transform: scale(0.88);
       animation: none;
       box-shadow:
-        0 0 0 4px rgba(245,158,11,0.3),
-        0 0 60px rgba(249,115,22,0.7),
-        0 2px 12px rgba(0,0,0,0.8);
+        0 0 0 3px rgba(255,106,0,0.3),
+        0 0 50px rgba(255,106,0,0.7),
+        0 2px 10px rgba(0,0,0,0.8);
     }
 
-    /* Estado: bloqueado pelo debounce */
     .btn-lenha.blocked {
       transform: scale(0.92);
       opacity: 0.8;
@@ -174,32 +190,37 @@
       align-items: center;
       justify-content: center;
       height: 100%;
-      gap: 6px;
+      gap: 4px;
       pointer-events: none;
     }
+
     .btn-icon {
-      font-size: clamp(3rem, 12vw, 5rem);
+      font-size: clamp(2.5rem, 10vw, 4rem);
       line-height: 1;
       text-shadow: 0 2px 8px rgba(0,0,0,0.4);
       animation: iconBounce 1.5s ease-in-out infinite alternate;
     }
     @keyframes iconBounce {
       0%   { transform: translateY(0px) scale(1); }
-      100% { transform: translateY(-6px) scale(1.05); }
-    }
-    .btn-text {
-      font-family: var(--font-d);
-      font-size: clamp(1.2rem, 5vw, 1.8rem);
-      color: #451a03;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 3px rgba(255,255,255,0.3);
+      100% { transform: translateY(-5px) scale(1.04); }
     }
 
-    /* ===== FEEDBACK DE CLIQUE (ripple) ===== */
+    .btn-text {
+      font-family: var(--font-d);
+      font-size: clamp(0.9rem, 4vw, 1.3rem);
+      color: rgba(255,255,255,0.95);
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.25);
+      padding: 3px 10px;
+      border-radius: 60px;
+    }
+
+    /* Ripple */
     .ripple {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.4);
       transform: scale(0);
       pointer-events: none;
       animation: rippleAnim 0.5s ease-out forwards;
@@ -214,135 +235,150 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
+      flex-shrink: 0;
     }
     .counter-num {
       font-family: var(--font-d);
-      font-size: clamp(2rem, 8vw, 3rem);
-      color: var(--amber);
-      text-shadow: 0 0 20px rgba(245,158,11,0.5);
-      transition: transform 0.15s ease;
+      font-size: clamp(1.8rem, 7vw, 2.5rem);
+      color: var(--orange);
+      text-shadow: 0 0 16px rgba(255,106,0,0.5);
+      transition: transform 0.12s ease;
     }
     .counter-num.bump {
       transform: scale(1.2);
     }
     .counter-label {
-      font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+      font-size: clamp(0.55rem, 2.2vw, 0.7rem);
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(254,243,199,0.35);
+      color: rgba(255,255,255,0.35);
     }
 
-    /* ===== RODAPÉ (energia global) ===== */
+    /* ===== RODAPÉ - BARRA DE ENERGIA ===== */
     .bottom-section {
       width: 100%;
+      flex-shrink: 0;
+      margin-top: 4px;
     }
     .global-bar-label {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .gbl-title {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(254,243,199,0.35);
+      color: rgba(255,255,255,0.35);
+      font-weight: 600;
     }
     .gbl-percent {
       font-family: var(--font-d);
-      font-size: 0.9rem;
-      color: var(--amber);
+      font-size: 0.85rem;
+      color: var(--orange);
     }
     .global-bar-track {
       width: 100%;
-      height: 10px;
-      background: rgba(245,158,11,0.1);
-      border-radius: 5px;
+      height: 8px;
+      background: rgba(255,106,0,0.12);
+      border-radius: 4px;
       overflow: hidden;
-      border: 1px solid rgba(245,158,11,0.15);
+      border: 1px solid rgba(255,106,0,0.2);
     }
     .global-bar-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #92400e, #f59e0b, #fde047);
-      border-radius: 5px;
-      transition: width 0.5s cubic-bezier(.4,0,.2,1);
-      box-shadow: 0 0 8px rgba(245,158,11,0.5);
+      background: linear-gradient(90deg, #cc3300, #ff6a00, #ffb347);
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 6px rgba(255,106,0,0.5);
     }
     .global-status {
       text-align: center;
-      margin-top: 8px;
-      font-size: clamp(0.7rem, 3vw, 0.85rem);
-      color: rgba(254,243,199,0.5);
+      margin-top: 6px;
+      font-size: clamp(0.65rem, 2.8vw, 0.75rem);
+      color: rgba(255,255,255,0.45);
       font-style: italic;
+      font-weight: 500;
     }
 
-    /* ===== TOAST DE FEEDBACK ===== */
+    /* ===== TOAST ===== */
     .toast {
       position: fixed;
-      top: 20px; left: 50%;
-      transform: translateX(-50%) translateY(-80px);
-      background: rgba(245,158,11,0.15);
-      border: 1px solid rgba(245,158,11,0.3);
-      color: var(--cream);
-      padding: 10px 20px;
-      border-radius: 24px;
-      font-size: 0.85rem;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,106,0,0.5);
+      color: #fff2e0;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: bold;
       letter-spacing: 1px;
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.2s;
       opacity: 0;
-      z-index: 50;
+      z-index: 100;
       white-space: nowrap;
+      pointer-events: none;
+      font-family: var(--font-b);
     }
     .toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
 
-    /* ===== STATUS DE CONEXÃO ===== */
+    /* Conexão */
     .conn-dot {
       position: fixed;
-      top: 12px; right: 16px;
-      width: 8px; height: 8px;
+      top: 14px;
+      right: 16px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #6b7280;
-      transition: background 0.3s ease;
-      z-index: 10;
+      transition: all 0.2s ease;
+      z-index: 20;
+      box-shadow: 0 0 2px rgba(0,0,0,0.3);
     }
     .conn-dot.connected    { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
     .conn-dot.disconnected { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+
+    /* Ajuste para celular: logo responsivo */
+    @media (max-width: 480px) {
+      .main-logo {
+        max-height: 90px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- Indicador de conexão -->
 <div class="conn-dot" id="connDot"></div>
-
-<!-- Toast -->
-<div class="toast" id="toast">🔥 Lenha jogada!</div>
+<div class="toast" id="toast">🔥 Lenha adicionada!</div>
 
 <div class="page">
 
-  <!-- TOPO -->
+  <!-- TOPO APENAS COM LOGO (sem título textual) -->
   <div class="top-section">
-    <div class="event-name">🔥 Arraiá Corporativo</div>
-    <div class="event-sub">Ajude a acender a fogueira!</div>
-    <div class="bunting">🎪 🏮 🎪 🏮 🎪</div>
+    <!-- Logo principal: tenta carregar logo.png; se falhar, mostra um placeholder bonito apenas com ícone 🔥 Stanza -->
+    <img class="main-logo" id="customLogo" src="logo.png" alt="Stanza Logo" 
+         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+    <div class="logo-fallback" style="display: none;">⚡ STANZA 🔥</div>
+
   </div>
 
   <!-- CENTRO: Botão + Contador -->
   <div class="center-section">
-    <div class="mini-fire">🪵🔥🪵</div>
 
-    <!-- BOTÃO PRINCIPAL -->
     <button class="btn-lenha" id="btnLenha" aria-label="Colocar lenha na fogueira">
       <div class="btn-inner">
         <span class="btn-icon">🔥</span>
-        <span class="btn-text">Colocar mais lenha!</span>
+        <span class="btn-text">COLOCAR MAIS LENHA!</span>
       </div>
     </button>
 
-    <!-- CONTADOR LOCAL -->
     <div class="counter-wrap">
       <div class="counter-num" id="localCount">0</div>
       <div class="counter-label">Suas lenhas 🪵</div>
@@ -363,11 +399,10 @@
 
 </div>
 
-<!-- Socket.IO client -->
 <script src="/socket.io/socket.io.js"></script>
 <script>
 // ============================================================
-// CELULAR — Lógica JavaScript
+// CELULAR — Lógica JavaScript (versão final com LOGO FOCAL)
 // ============================================================
 
 const socket    = io();
@@ -379,86 +414,87 @@ const gPercent  = document.getElementById('globalPercent');
 const gBarFill  = document.getElementById('globalBarFill');
 const gStatus   = document.getElementById('globalStatus');
 
-// ===== Estado local =====
 let localCount    = 0;
-let canClick      = true;   // Debounce flag
-const DEBOUNCE_MS = 200;    // Intervalo mínimo entre cliques
+let canClick      = true;
+const DEBOUNCE_MS = 200;
 let toastTimeout  = null;
 
-// ===== Mapa de Status =====
+// Mapeamento de status com base na porcentagem
 const STATUS_MAP = [
   { min: 0,  max: 24,  text: 'Preparando a fogueira...' },
   { min: 25, max: 49,  text: 'Aquecendo os motores 🔥' },
   { min: 50, max: 74,  text: 'O mercado está esquentando!' },
   { min: 75, max: 99,  text: 'Expectativa lá em cima! 🚀' },
-  { min: 100, max: 100, text: 'LANÇAMENTO LIBERADO! 🎉' },
+  { min: 100, max: 100, text: 'LANÇAMENTOS LIBERADOS! 🎉' },
 ];
+
 function getStatus(p) {
-  return (STATUS_MAP.find(s => p >= s.min && p <= s.max) || STATUS_MAP[0]).text;
+  return STATUS_MAP.find(s => p >= s.min && p <= s.max)?.text || STATUS_MAP[0].text;
 }
 
-// ===== Mostrar Toast =====
 function showToast(msg) {
   toast.textContent = msg;
   toast.classList.add('show');
   clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => toast.classList.remove('show'), 1200);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 1300);
 }
 
-// ===== Efeito Ripple no botão =====
+// Efeito ripple no botão
 function spawnRipple(e) {
-  const rect   = btn.getBoundingClientRect();
-  const cx     = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const cy     = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-  const size   = Math.max(rect.width, rect.height) * 0.6;
+  const rect = btn.getBoundingClientRect();
+  let clientX, clientY;
+  if (e.touches) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  const cx = clientX - rect.left;
+  const cy = clientY - rect.top;
+  const size = Math.max(rect.width, rect.height) * 0.55;
   const ripple = document.createElement('span');
   ripple.className = 'ripple';
-  ripple.style.cssText = `
-    width:${size}px; height:${size}px;
-    left:${cx - size/2}px; top:${cy - size/2}px;
-  `;
+  ripple.style.cssText = `width:${size}px;height:${size}px;left:${cx - size/2}px;top:${cy - size/2}px;`;
   btn.appendChild(ripple);
   ripple.addEventListener('animationend', () => ripple.remove());
 }
 
-// ===== Bump no contador local =====
+// Animação de bump no contador
 function bumpCounter() {
   localCnt.classList.remove('bump');
-  // Force reflow para reiniciar animação
   void localCnt.offsetWidth;
   localCnt.classList.add('bump');
   setTimeout(() => localCnt.classList.remove('bump'), 200);
 }
 
-// ===== Handler de Clique =====
+// Manipulador de clique/toque
 function handleClick(e) {
+  if (e && e.preventDefault) {
+    e.preventDefault();
+  }
   if (!canClick) {
-    // Debounce ativo: feedback visual de bloqueio
     btn.classList.add('blocked');
     setTimeout(() => btn.classList.remove('blocked'), 100);
     return;
   }
 
-  // Ativa debounce
   canClick = false;
   setTimeout(() => { canClick = true; }, DEBOUNCE_MS);
 
-  // Feedback visual: press
   btn.classList.add('pressed');
   setTimeout(() => btn.classList.remove('pressed'), 120);
 
-  // Ripple
   spawnRipple(e);
 
-  // Incrementa contador local
   localCount++;
   localCnt.textContent = localCount;
   bumpCounter();
 
-  // Emite para o servidor
+  // Envia energia pro servidor via socket.io
   socket.emit('add_energy');
 
-  // Toast
+  // Mensagens dinâmicas
   const toasts = ['🔥 Lenha jogada!', '🪵 Fogueira crescendo!', '🔥 Tá pegando fogo!', '🚀 Isso aí!'];
   if (localCount % 5 === 0) {
     showToast(`🎉 ${localCount} lenhas! Você tá arrasando!`);
@@ -467,43 +503,63 @@ function handleClick(e) {
   }
 }
 
-// Suporte a touch e click
+// Eventos do botão (clique e toque)
 btn.addEventListener('click', handleClick);
 btn.addEventListener('touchstart', (e) => {
-  e.preventDefault(); // Previne double-tap zoom e 300ms delay
+  e.preventDefault();
   handleClick(e);
 }, { passive: false });
+btn.addEventListener('contextmenu', e => e.preventDefault());
 
-// ===== Socket.IO: Receber Energia Global =====
+// Atualiza a barra de progresso global e o status com base nos dados do servidor
 socket.on('connect', () => {
   connDot.className = 'conn-dot connected';
-  console.log('[Celular] Conectado:', socket.id);
+  console.log('[Conectado] Stanza - Arraiá');
 });
 
 socket.on('energy_update', ({ energy, percent }) => {
-  gPercent.textContent    = percent + '%';
-  gBarFill.style.width    = percent + '%';
-  gStatus.textContent     = getStatus(percent);
+  gPercent.textContent = percent + '%';
+  gBarFill.style.width = percent + '%';
+  gStatus.textContent = getStatus(percent);
 
-  // Muda cor do status conforme progresso
   if (percent >= 100) {
     gStatus.style.color = '#22c55e';
   } else if (percent >= 75) {
-    gStatus.style.color = '#fde047';
+    gStatus.style.color = '#ffb347';
   } else if (percent >= 50) {
-    gStatus.style.color = '#f97316';
+    gStatus.style.color = '#ff6a00';
   } else {
-    gStatus.style.color = 'rgba(254,243,199,0.5)';
+    gStatus.style.color = 'rgba(255,255,255,0.5)';
   }
 });
 
 socket.on('disconnect', () => {
   connDot.className = 'conn-dot disconnected';
-  console.warn('[Celular] Desconectado, tentando reconectar...');
+  console.warn('[Desconectado] Tentando reconectar...');
 });
 
-// ===== Previne context menu no long press (mobile) =====
-btn.addEventListener('contextmenu', e => e.preventDefault());
+// Tratamento de erro de logo: se a imagem falhar, mostramos fallback estilizado mas sem bagunçar layout
+window.addEventListener('DOMContentLoaded', () => {
+  const logoImg = document.getElementById('customLogo');
+  const fallbackSpan = document.querySelector('.logo-fallback');
+  
+  // Se a imagem não carregar (onerror já configurado no elemento), mostramos fallback e escondemos img
+  if (logoImg.complete && (logoImg.naturalWidth === 0 || logoImg.naturalHeight === 0)) {
+    logoImg.style.display = 'none';
+    if (fallbackSpan) fallbackSpan.style.display = 'inline-block';
+  }
+  
+  // Caso ocorra erro após carregamento dinâmico
+  logoImg.addEventListener('error', () => {
+    logoImg.style.display = 'none';
+    if (fallbackSpan) fallbackSpan.style.display = 'inline-block';
+  });
+});
+
+// Pequeno ajuste: evitar que o botão seja arrastado ou selecionado
+document.querySelectorAll('.btn-lenha, .main-logo').forEach(el => {
+  el.addEventListener('dragstart', (e) => e.preventDefault());
+});
 </script>
 </body>
 </html>
