@@ -17,7 +17,7 @@ const io = new Server(server, {
 // --- Estado Global ---
 // energyMax define quantos cliques equivalem a 100%
 // Ajuste este valor conforme o número esperado de participantes
-const ENERGY_MAX = 150;
+const ENERGY_MAX = 10;
 let energyCount = 0; // Contador bruto de cliques recebidos
 
 // Calcula a % com base no total de cliques
